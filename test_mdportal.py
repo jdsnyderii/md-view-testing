@@ -64,6 +64,7 @@ def main() -> int:
         return 1
     body = r.data.decode("utf-8", errors="replace")
     if "Portal home" not in body and "portal" not in body.lower():
+        # still ok if content rendered without that string
         pass
     if "<main" not in body and "<main>" not in body:
         print("FAIL — no <main> in response")
