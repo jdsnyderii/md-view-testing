@@ -1,0 +1,126 @@
+id: https://example.org/mdportal/roots
+name: mdportal_roots
+title: mdportal roots.yaml
+description: >
+  Configuration for mdportal named mount roots. Matches app.py
+  (load_roots / LocalDir / GitHub / HTTP / S3).
+
+  Root kinds are modeled as subclasses of RootSpec with type as a
+  type designator (designates_type). Instance YAML uses type: dir|github|http|s3
+  matching the subclass names.
+
+  String fields may contain ${ENV} or ${ENV:-default}; expansion is runtime.
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  mdportal: https://example.org/mdportal/
+
+default_prefix: mdportal
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+
+  RootsConfig:
+    description: Top-level roots.yaml document
+    tree_root: true
+    attributes:
+      home:
+        description: Default document as "<rootName>/<path>" (e.g. portalRoot/index.md)
+        range: string
+        required: true
+        pattern: "^[^/]+/.+$"
+      roots:
+        description: Map of root name to root specification
+        range: RootSpec
+        multivalued: true
+        inlined: true
+        inlined_as_list: false
+        required: true
+
+  RootSpec:
+    abstract: true
+    description: Named mount root; concrete kind selected by type
+    attributes:
+      name:
+        description: Root name (YAML map key); becomes $name in includes
+        range: string
+        identifier: true
+        required: true
+      type:
+        description: Kind of root — designator for the concrete subclass
+        range: string
+        required: true
+        designates_type: true
+      ttl:
+        description: Cache TTL seconds for remote roots (default 60)
+        range: integer
+        minimum_value: 0
+
+  dir:
+    is_a: RootSpec
+    description: Local directory (bind-mount in Docker)
+    attributes:
+      path:
+        description: Filesystem path (absolute in containers)
+        range: string
+        required: true
+
+  github:
+    is_a: RootSpec
+    description: GitHub repo via raw.githubusercontent.com
+    attributes:
+      repo:
+        description: owner/name
+        range: string
+        required: true
+        pattern: "^[^/]+/[^/]+$"
+      ref:
+        description: Branch, tag, or commit (default main)
+        range: string
+      subdir:
+        description: Optional path within the repo
+        range: string
+      token:
+        description: GitHub token; empty means public
+        range: string
+
+  http:
+    is_a: RootSpec
+    description: Arbitrary http(s) base URL
+    attributes:
+      url:
+        description: Base http(s) URL; docs only supply the path under it
+        range: string
+        required: true
+        pattern: "^https?://"
+      headers:
+        description: Extra request headers (values may use ${ENV})
+        range: string
+        multivalued: true
+        inlined: true
+      timeout:
+        description: Timeout seconds (default 10)
+        range: integer
+        minimum_value: 1
+
+  s3:
+    is_a: RootSpec
+    description: S3 or S3-compatible bucket
+    attributes:
+      bucket:
+        range: string
+        required: true
+      prefix:
+        description: Key prefix; object key is prefix/rel
+        range: string
+      region:
+        range: string
+      endpoint_url:
+        description: S3-compatible endpoint (MinIO, R2, …)
+        range: string
+      profile:
+        description: boto3 profile name
+        range: string
