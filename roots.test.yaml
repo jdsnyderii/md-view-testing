@@ -1,0 +1,17 @@
+# Local/CI test config — same schema as roots.yaml, paths under ./sample
+home: portalRoot/index.md
+
+roots:
+  portalRoot:
+    type: dir
+    path: sample/portal
+
+  sharedRoot:
+    type: dir
+    path: sample/shared
+
+  flaskRepo:
+    type: github
+    repo: pallets/flask
+    ref: main
+    token: ${GITHUB_TOKEN}

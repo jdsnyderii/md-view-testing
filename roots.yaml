@@ -1,0 +1,34 @@
+# Example config shipped in the image at /config/roots.yaml.
+# Replace the whole file with a mount, or edit paths to match your mounts.
+#
+# Contract: for every `type: dir` root, mount a host directory at `path`.
+# github / http / s3 need no binds — only credentials via the environment.
+
+home: portalRoot/index.md
+
+roots:
+  portalRoot:
+    type: dir
+    path: /data/portal
+
+  sharedRoot:
+    type: dir
+    path: /data/shared
+
+  flaskRepo:
+    type: github
+    repo: pallets/flask
+    ref: main
+    token: ${GITHUB_TOKEN}
+
+  # wiki:
+  #   type: http
+  #   url: https://docs.example.com/raw
+  #   headers: { Authorization: "Bearer ${DOCS_TOKEN}" }
+
+  # assets:
+  #   type: s3
+  #   bucket: my-docs-bucket
+  #   prefix: portal/
+  #   region: us-east-1
+  #   endpoint_url: http://minio:9000

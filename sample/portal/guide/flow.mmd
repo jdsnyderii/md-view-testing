@@ -1,0 +1,7 @@
+flowchart LR
+  A[Markdown doc] --> B{fenced_include}
+  B -->|local dir| C[LocalDir]
+  B -->|GitHub| D[GitHub]
+  B -->|S3| E[S3]
+  B -->|HTTP| F[HTTP]
+  C & D & E & F --> G[Rendered HTML]
