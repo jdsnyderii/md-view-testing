@@ -2,7 +2,6 @@
 # Regenerate Pydantic models from LinkML and attach type discriminator.
 set -e
 cd "$(dirname "$0")"
-export PATH="/usr/local/bin:$PATH"
 
 if command -v gen-pydantic >/dev/null 2>&1; then
   gen-pydantic roots.linkml.yaml --extra-fields forbid > roots_models.py

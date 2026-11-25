@@ -1,5 +1,5 @@
 # mdportal
-PYTHON  ?= python3
+UV      ?= uv
 CONFIG  ?= roots.test.yaml
 PORT    ?= 5000
 IMAGE   ?= mdportal
@@ -16,17 +16,17 @@ help:
 	@echo "  clean     remove __pycache__"
 
 models:
-	@sh regenerate_models.sh
+	$(UV) run --locked sh regenerate_models.sh
 
 validate:
-	$(PYTHON) validate_roots.py $(CONFIG)
+	$(UV) run --locked python validate_roots.py $(CONFIG)
 
 test: validate
-	MDPORTAL_CONFIG=$(CONFIG) $(PYTHON) test_mdportal.py
+	MDPORTAL_CONFIG=$(CONFIG) $(UV) run --locked python test_mdportal.py
 
 run: validate
 	MDPORTAL_CONFIG=$(abspath $(CONFIG)) \
-	$(PYTHON) -c "from app import create_app; create_app().run(debug=True, port=$(PORT))"
+	$(UV) run --locked python -c "from app import create_app; create_app().run(debug=True, port=$(PORT))"
 
 docker:
 	@sh run.sh

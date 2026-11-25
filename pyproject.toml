@@ -1,0 +1,19 @@
+[project]
+name = "mdportal"
+version = "0.1.0"
+description = "Flask Markdown viewer with configurable content roots"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.34",
+    "flask>=3.0",
+    "gunicorn>=22.0",
+    "jinja2>=3.1",
+    "linkml>=1.9.3",
+    "mistune>=3.0",
+    "pydantic>=2.11",
+    "pygments>=2.17",
+    "pyyaml>=6.0",
+]
+
+[tool.uv]
+package = false
