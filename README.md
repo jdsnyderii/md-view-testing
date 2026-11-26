@@ -37,6 +37,10 @@ roots:
 
 The image contains the application and its runtime dependencies. This script mounts the example `roots.yaml`, `sample/portal` → `/data/portal`, and `sample/shared` → `/data/shared`.
 
+### Compare Material for MkDocs printing
+
+An independent sample site for trying Material's built-in Cmd-P print styles is in [`sample/mkdocs-material`](sample/mkdocs-material/README.md). It uses the official `squidfunk/mkdocs-material:9` Docker image and runs on port 8001, separately from mdportal.
+
 ### Build options
 
 The Dockerfile build arguments select the Python image tag, container port, Gunicorn bind address and worker count, and runtime UID. Defaults are `PYTHON_VERSION=3.13`, `APP_PORT=8000`, `GUNICORN_BIND_ADDRESS=0.0.0.0`, `GUNICORN_WORKERS=2`, and `APP_UID=10001`. The final image runs as this numeric non-root UID and matching GID; builds reject zero or non-numeric UIDs. The dedicated account has a non-login shell and a private writable home for Gunicorn.

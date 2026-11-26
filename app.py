@@ -350,7 +350,7 @@ class Portal:
 # --------------------------------------------------------------------------- web
 _light = HtmlFormatter(style="friendly").get_style_defs(".highlight")
 _dark = HtmlFormatter(style="native").get_style_defs(".highlight")
-PYGMENTS_CSS = f"{_light}\n@media (prefers-color-scheme: dark) {{\n{_dark}\n}}"
+PYGMENTS_CSS = f"{_light}\n@media screen and (prefers-color-scheme: dark) {{\n{_dark}\n}}"
 
 
 def create_app(config: str | None = None):

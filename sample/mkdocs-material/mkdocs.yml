@@ -1,0 +1,16 @@
+site_name: Material Print Test
+nav:
+  - Print test: index.md
+
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: teal
+    accent: amber
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+  - pymdownx.superfences

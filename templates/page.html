@@ -81,7 +81,7 @@
 }
 
 /* Dark / slate scheme */
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root {
     --md-primary-fg-color:        #4db6ac;
     --md-primary-fg-color--light: #80cbc4;
@@ -346,6 +346,118 @@ hr {
 
 /* Soften some Pygments defaults for better Material feel */
 .highlight .hll { background-color: rgba(255, 171, 0, 0.15); }
+
+/* ------------------------------------------------------------------ print */
+@page {
+  margin: 25mm;
+}
+
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    display: block;
+    color: var(--md-default-fg-color);
+    background: var(--md-default-bg-color);
+    font-size: 10.5pt;
+    line-height: 1.45;
+    -webkit-font-smoothing: auto;
+  }
+
+  header {
+    display: none;
+  }
+
+  main {
+    display: block;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--md-default-fg-color);
+    break-after: avoid-page;
+  }
+
+  p, li, blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+
+  a, a:hover, a:focus {
+    color: var(--md-typeset-a-color);
+    text-decoration: underline;
+  }
+
+  table {
+    display: table;
+    width: 100%;
+    overflow: visible;
+    font-size: 9pt;
+    break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr, img, svg {
+    break-inside: avoid-page;
+  }
+
+  th, td {
+    padding: 0.35rem 0.5rem;
+  }
+
+  figure.include {
+    overflow: visible;
+    box-shadow: none;
+    break-inside: auto;
+  }
+
+  figure.include figcaption {
+    break-after: avoid-page;
+  }
+
+  figure .highlight pre {
+    overflow: visible;
+    padding: 0.6rem 0.75rem;
+    font-size: 8pt;
+    line-height: 1.35;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+
+  figure.diagram {
+    break-inside: avoid-page;
+  }
+
+  figure.diagram pre.mermaid {
+    overflow: visible;
+    padding: 0.75rem;
+  }
+
+  figure.diagram .mermaid svg {
+    max-width: 100%;
+    max-height: 240mm;
+  }
+
+}
+
 </style>
 </head>
 <body>
@@ -621,6 +733,7 @@ defs #sequencenumber {
       noteFontSize: "16px"
     }
   });
+
 </script>
 </body>
 </html>

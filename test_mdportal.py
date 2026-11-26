@@ -69,9 +69,31 @@ def main() -> int:
     if "<main" not in body and "<main>" not in body:
         print("FAIL — no <main> in response")
         return 1
+    if "Print preview" in body or 'class="print-preview"' in body:
+        print("FAIL — separate print preview UI is still present")
+        return 1
+    required_print_styles = (
+        "@media print",
+        "@page {\n  margin: 25mm;",
+        "@media screen and (prefers-color-scheme: dark)",
+        "print-color-adjust: exact",
+        "display: table;",
+        "overflow-wrap: anywhere;",
+    )
+    if any(style not in body for style in required_print_styles):
+        print("FAIL — document view is missing Material-style print rules")
+        return 1
     print(f"   ok ({len(body)} bytes)")
 
-    # 5) Guide page
+    # 5) No separate print route; printing uses the document view
+    step("GET /print/portalRoot/index.md (expect 404)")
+    r = client.get("/print/portalRoot/index.md")
+    if r.status_code != 404:
+        print(f"FAIL — expected print route 404, got {r.status_code}")
+        return 1
+    print("   ok 404")
+
+    # 6) Guide page
     step("GET /view/portalRoot/guide/index.md")
     r = client.get("/view/portalRoot/guide/index.md")
     if r.status_code != 200:
@@ -79,7 +101,7 @@ def main() -> int:
         return 1
     print(f"   ok ({len(r.data)} bytes)")
 
-    # 6) Missing doc → 404
+    # 7) Missing doc → 404
     step("GET missing doc (expect 404)")
     r = client.get("/view/portalRoot/nope.md")
     if r.status_code != 404:
